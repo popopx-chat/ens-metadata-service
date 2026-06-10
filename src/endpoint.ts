@@ -3,8 +3,7 @@ import { Express } from 'express';
 import { ensMetadata } from './controller/ensMetadata';
 import { ensImage } from './controller/ensImage';
 import { ensRasterize } from './controller/ensRasterize';
-import { avatarMetadata } from './controller/avatarMetadata';
-import { avatarImage } from './controller/avatarImage';
+// SNRC: avatars are out of scope (issue #3); the /avatar routes are not registered.
 import { headerMetadata } from './controller/headerMetadata';
 import { headerImage } from './controller/headerImage';
 import { queryNFTep } from './controller/queryNFT';
@@ -30,10 +29,6 @@ export default function (app: Express) {
     '/:networkName/:contractAddress(0x[a-fA-F0-9]{40})/:tokenId/rasterize',
     ensRasterize
   );
-
-  app.get('/:networkName/avatar/:name/meta', avatarMetadata);
-
-  app.get('/:networkName/avatar/:name', avatarImage);
 
   app.get('/:networkName/header/:name/meta', headerMetadata);
 

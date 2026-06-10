@@ -5,7 +5,7 @@ import {
   registerFont 
 }                                                   from 'canvas';
 import { Version }                                  from '../base';
-import { CANVAS_FONT_PATH, CANVAS_EMOJI_FONT_PATH } from '../config';
+import { CANVAS_FONT_PATH, CANVAS_EMOJI_FONT_PATH, SIMPLEX_TLD, DAPP_BASE_URL } from '../config';
 import createSVGfromTemplate                        from '../svg-template';
 import base64EncodeUnicode                          from '../utils/base64encode';
 import { isASCII, findCharacterSet }                from '../utils/characterSet';
@@ -64,7 +64,7 @@ export class Metadata {
     this.description = this.formatDescription(name, description);
     this.attributes = this.initializeAttributes(created_date, label);
     this.url = this.is_normalized
-      ? `https://app.ens.domains/name/${name}`
+      ? `${DAPP_BASE_URL}/${name}`
       : null;
     this.last_request_date = last_request_date;
     this.version = version;
@@ -79,12 +79,12 @@ export class Metadata {
       ? ens_beautify(name)
       : tokenId.replace(
           new RegExp('^(.{0,6}).*(.{4})$', 'im'),
-          '[$1...$2].eth'
+          `[$1...$2].${SIMPLEX_TLD}`
         );
   }
 
   formatDescription(name: string, description?: string) {
-    const baseDescription = description || `${this.name}, an ENS name.`;
+    const baseDescription = description || `${this.name}, a SimpleX name.`;
     const normalizedNote = !this.is_normalized
       ? ` (${name} is not in normalized form)`
       : '';
@@ -114,7 +114,7 @@ export class Metadata {
     if (
       version == Version.v2 &&
       wrapperState === WrapperState.WRAPPED &&
-      (label.split('.').length > 1 || !label.endsWith('.eth'))
+      (label.split('.').length > 1 || !label.endsWith('.' + SIMPLEX_TLD))
     ) {
       return ' [ ⚠️ ATTENTION: THE NFT FOR THIS NAME CAN BE REVOKED AT ANY TIME WHILE IT IS IN THE WRAPPED STATE ]';
     }
@@ -261,7 +261,7 @@ export class Metadata {
       name.substring(0, Metadata.MAX_CHAR - 7) +
       '...' +
       name.substring(_nameLength - 7, _nameLength - 4) +
-      '.eth'
+      '.' + SIMPLEX_TLD
     );
   }
 

@@ -11,6 +11,18 @@ const CANVAS_FONT_PATH = path.join(FONT_FOLDER, 'Satoshi-Bold.ttf');
 const CANVAS_EMOJI_FONT_PATH = path.join(FONT_FOLDER, 'NotoColorEmoji.ttf');
 const INAMEWRAPPER = process.env.INAMEWRAPPER || '0xd82c42d8';
 
+// --- SNRC customisations ---
+// The deployment indexes our own ENS-shaped contracts on mainnet (the .testing
+// / .simplex TLDs), served by the self-hosted Graph Node from
+// simplex-namespace-contract/scripts/subgraph — not the public ENS subgraph.
+// When set, SUBGRAPH_URL overrides the per-network table in service/network.ts.
+const SUBGRAPH_URL = process.env.SUBGRAPH_URL || '';
+// TLD used for display fallbacks (hashed / ellipsised names). Normalised names
+// already carry their TLD via the subgraph `name` field.
+const SIMPLEX_TLD = process.env.SIMPLEX_TLD || 'testing';
+// dApp base URL used for the OpenSea `url` field (link back to the name page).
+const DAPP_BASE_URL = process.env.DAPP_BASE_URL || 'https://testing-names.simplex.chat';
+
 const IPFS_GATEWAY = process.env.IPFS_GATEWAY || 'https://ipfs.io';
 const INFURA_API_KEY = process.env.INFURA_API_KEY || '';
 const OPENSEA_API_KEY = process.env.OPENSEA_API_KEY || '';
@@ -48,6 +60,9 @@ export {
   ADDRESS_ETH_REGISTRAR,
   ADDRESS_ETH_REGISTRY,
   ADDRESS_NAME_WRAPPER,
+  DAPP_BASE_URL,
+  SIMPLEX_TLD,
+  SUBGRAPH_URL,
   CANVAS_FONT_PATH,
   CANVAS_EMOJI_FONT_PATH,
   ETH_REGISTRY_ABI,
