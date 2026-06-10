@@ -23,12 +23,14 @@ import {
   decodeFuses, 
   getWrapperState 
 }                             from '../utils/fuse';
+import { namehash }           from '@ensdomains/ensjs/utils';
 import { createBatchQuery }   from '../utils/batchQuery';
 import { getNamehash }        from '../utils/namehash';
 import { bigIntToUint8Array } from '../utils/bigIntToUint8Array';
+import { SERVER_URL, SIMPLEX_TLD } from '../config';
 
-const eth =
-  '0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae';
+// SNRC: TLD parent node (upstream hardcoded namehash('eth')).
+const eth = namehash(SIMPLEX_TLD);
 const GRACE_PERIOD_MS = 7776000000; // 90 days as milliseconds
 
 export async function getDomain(
@@ -105,11 +107,10 @@ export async function getDomain(
       }
       metadata.generateImage();
     } else {
-      metadata.setBackground(
-        `https://metadata.ens.domains/${networkName}/avatar/${name}`
-      );
+      // SNRC: avatars unsupported (issue #3); no avatar background. Image points
+      // at this service's own /image route (SERVER_URL), not metadata.ens.domains.
       metadata.setImage(
-        `https://metadata.ens.domains/${networkName}/${contractAddress}/${hexId}/image`
+        `${SERVER_URL}/${networkName}/${contractAddress}/${hexId}/image`
       );
     }
   }
