@@ -1,12 +1,15 @@
 import { namehash }              from '@ensdomains/ensjs/utils';
 import { hexlify, zeroPadValue } from 'ethers';
 import { Version }               from '../base';
+import { SIMPLEX_TLD }           from '../config';
 import { bigIntToUint8Array }    from './bigIntToUint8Array';
 
 const sha3 = require('js-sha3').keccak_256;
 
-const eth0x =
-  '4f5b812789fc606be1b3b16908db13fc7a9adf7ca72641f84d75b47069d3d7f0';
+// SNRC: labelhash of the configured TLD (upstream hardcoded labelhash('eth')).
+// Used to reconstruct a v1 name's namehash from its labelhash in the
+// subgraph-not-found fallback.
+const eth0x = sha3(SIMPLEX_TLD);
 
 export function constructEthNameHash(
   tokenId: string,

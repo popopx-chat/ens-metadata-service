@@ -1,7 +1,10 @@
 import { gql } from 'graphql-request';
+import { namehash } from '@ensdomains/ensjs/utils';
+import { SIMPLEX_TLD } from '../config';
 
-const ETH_NAMEHASH =
-  '0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae';
+// SNRC: the 2LD lookup filters on the parent TLD node. Upstream hardcoded
+// namehash('eth'); we derive it from the configured TLD (.testing / .simplex).
+const ETH_NAMEHASH = namehash(SIMPLEX_TLD);
 
 export const GET_DOMAINS = gql`
   query getDomains($tokenId: String) {

@@ -6,6 +6,7 @@ import {
   NODE_PROVIDER_URL_CF,
   NODE_PROVIDER_URL_GOERLI,
   NODE_PROVIDER_URL_SEPOLIA,
+  SUBGRAPH_URL as SUBGRAPH_URL_OVERRIDE,
   THE_GRAPH_API_KEY,
 } from '../config';
 
@@ -59,6 +60,13 @@ export default function getNetwork(network: NetworkName): {
   // currently subgraphs used under this function are outdated,
   // we will have namewrapper support and more attributes when latest subgraph goes to production
   let SUBGRAPH_URL: string;
+  // SNRC: a self-hosted Graph Node (indexing our mainnet .testing/.simplex
+  // contracts) overrides the public per-network table when configured.
+  if (SUBGRAPH_URL_OVERRIDE) {
+    const WEB3_URL = getWeb3URL(NODE_PROVIDER, NODE_PROVIDER_URL, network);
+    const provider = new JsonRpcProvider(WEB3_URL, network, { staticNetwork: true });
+    return { WEB3_URL, SUBGRAPH_URL: SUBGRAPH_URL_OVERRIDE, provider };
+  }
   switch (network) {
     case NETWORK.LOCAL:
       SUBGRAPH_URL = 'http://127.0.0.1:8000/subgraphs/name/graphprotocol/ens';
